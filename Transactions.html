@@ -42,13 +42,13 @@
 		</div>
     <div id="main-first" >
 		
-		<div id="box1">  
+		<div class="box" id="box1">  
             <p>Orders</p>
 		</div>		
-		<div id="box1">  
+		<div class="box" id="box2">  
             <p>Orders</p>
 		</div>
-		<div id="box1">  
+		<div class="box" id="box3">  
             <p>Orders</p>
 		</div>
 	
@@ -68,13 +68,18 @@
 			<input type="number" name="Table" placeholder="Table Num">
 			<input type="button" value = "Add-Orders" onClick="addInput('main-first');">
 			</form>
+			
+			<form name="myForm2" method="POST">
+				<input type="number" name="done" placeholder="Input Order Number">
+				<input type="button" value="done" onClick="fulfilled(document.myForm2.done.value);">
+			</form>
 		</div>
 	
 </div>
 
         <script language="Javascript" type="text/javascript">
 
-		var counter = 1;
+		var counter = 4;
 		var limit = 10;   
 			
 		function addInput(divName){
@@ -85,8 +90,9 @@
 			}
 			else {
 				var container_block = document.createElement('div');
-                container_block.innerHTML = "<p>" + document.myForm.Item.value + "<br> x" + document.myForm.Quantity.value + "<br> Table:" + document.myForm.Table.value +"</p>";
-				container_block.id = "box1" ;
+                container_block.innerHTML = "<p> Order no:" + (counter) + "<br>" + document.myForm.Item.value + "<br> x" + document.myForm.Quantity.value + "<br> Table:" + document.myForm.Table.value +"</p>";
+				container_block.id = "box" + (counter) ;
+				container_block.className = "box";
 				document.getElementById(divName).appendChild(container_block);
 
 				counter++;
@@ -95,7 +101,16 @@
 			else {
 			text = "Order cancelled!";
 			}
-}
+		}
+		
+		function fulfilled(num){
+			if (num < counter) {
+			var temp = "box" + num;
+			document.getElementById(temp).style.backgroundColor = 'green';
+			}
+			else { alert("Order Does Not Exist");
+			}
+		}
             
 			
          </script>
