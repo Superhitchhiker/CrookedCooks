@@ -1,5 +1,5 @@
 p {
-	margin: 0px;
+	margin: 0;
 	
 }
 
@@ -19,6 +19,11 @@ a:hover {
 		margin: auto;
 		padding-bottom: 20px;	
             }
+			
+.main-content {
+	width: 80%;
+
+}
 			
 #topbar {
 	
@@ -65,13 +70,10 @@ a:hover {
 	
 }
 
-#main-content {
-	width: 80%;
-
-}
 
 
-#main-first {
+
+.main-css {
 	display: flex;
 	flex-wrap: wrap;
 	display: -webkit-box;
@@ -82,17 +84,15 @@ a:hover {
   
   -webkit-flex-flow: row wrap;
   justify-content: space-around;
-
-	
 }
+
+
 
 .box {
   background: tomato;
-  height: 500px;
-  width: 300px;
+  min-height: 150px;
+  width: 200px;
   color: white;
-  font-weight: bold;
-  font-size: 3em;
   position: relative;
   padding: 5px;
   margin-top: 5px;
@@ -101,10 +101,7 @@ a:hover {
 }
 	
 .box p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
 
 	
 }

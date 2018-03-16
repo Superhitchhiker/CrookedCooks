@@ -36,79 +36,189 @@
                     
 </div>
 
-<div class="main-block" id="main-content" >
+<div class="main-block main-content" >
 	<div class="word">  
             <h2>Orders</h2>
 		</div>
-    <div id="main-first" >
-		
-		<div class="box" id="box1">  
-            <p>Orders</p>
-		</div>		
-		<div class="box" id="box2">  
-            <p>Orders</p>
-		</div>
-		<div class="box" id="box3">  
-            <p>Orders</p>
-		</div>
-	
+    <div class="main-css" id="main-first" >
+			
 		
 	</div>
-		
-		<div id="button-container">  
-			<form name="myForm" method="POST">
-			
-			<select name="Item" placeholder="Select Item">
-				<option value="Algio Olio">Algio Olio</option>
-				<option value="Cabanora">Cabanora</option>
-				<option value="Burger">Burger</option>
-				<option value="Sides">Sides</option>
-			</select>
-			<input type="number" name="Quantity" placeholder="Quantity">
-			<input type="number" name="Table" placeholder="Table Num">
-			<input type="button" value = "Add-Orders" onClick="addInput('main-first');">
-			</form>
-			
-			<form name="myForm2" method="POST">
-				<input type="number" name="done" placeholder="Input Order Number">
-				<input type="button" value="done" onClick="fulfilled(document.myForm2.done.value);">
-			</form>
-		</div>
+</div>
+
+<div class="main-block main-content" >
+	<div class="word">  
+            <h2>Completed</h2>
+	</div>
+	
+	<div class="main-css" id="main-second" >
+	</div>
 	
 </div>
+	
+	<div id="button-container">  
+		<form name="myForm" method="POST">
+		
+		<input type="number" name="Table" placeholder="Table Num">
+		<select name="Item" placeholder="Select Item">
+			<option value="Algio Olio">Algio Olio</option>
+			<option value="Cabanora">Cabanora</option>
+			<option value="Burger">Burger</option>
+			<option value="Sides">Sides</option>
+		</select>
+		<input type="number" name="Quantity" placeholder="Quantity">
+		<input type="button" value = "Add-Orders" onClick="addInput('main-first');">
+		</form>
+			
+		<form name="myForm2" method="POST">
+				<input type="number" name="done" placeholder="Input Order Number">
+				<input type="button" value="done" onClick="fulfilled(document.myForm2.done.value);">
+				<input type="number" name="back" placeholder="Undo Order Number">
+				<input type="button" value="undo" onClick="undo(document.myForm2.back.value);">
+		</form>
+	</div>
 
         <script language="Javascript" type="text/javascript">
 
-		var counter = 4;
-		var limit = 10;   
+		var counter = 1;
+		var limit = 1000; 
+		var temp2 = null;
+		var idSetter = 'box' + counter;
+		var table = new Array(50);
+		for(i in table) {
+			table[i-1] = 0;
+		}
+			
+			
+		var testText = localStorage.getItem("testJSON");
+		var text = '{ "101" : [' + 
+'{ "Item":"Aglio Olio" , "Quantity":"3" },' +
+'{ "Item":"Cabonara" , "Quantity":"4" },' +
+'{ "Item":"Burger" , "Quantity":"2" },' +
+'{ "Item":"Table" , "Quantity":"4" } ], "102" : [' + 
+'{ "Item":"Aglio Olio" , "Quantity":"3" },' +
+'{ "Item":"Cabonara" , "Quantity":"4" },' +
+'{ "Item":"Burger" , "Quantity":"2" },' +
+'{ "Item":"Table" , "Quantity":"4" } ]}';
+		var obj = JSON.parse(text);	
+		
+		for(i in obj) {
+			var container_block_prime = document.createElement('div');
+			document.getElementById('main-first').appendChild(container_block_prime);
+			container_block_prime.innerHTML = "Order-No: " + i +"<br>";
+			for(x in obj[i]) {	
+				container_block_prime.id = "box" + i ;
+				container_block_prime.className = "box";
+				container_block_prime.innerHTML += obj[i][x].Item;
+				container_block_prime.innerHTML += ": " + obj[i][x].Quantity + "<br>";
+			
+			}
+		counter = parseInt(i) + 1;
+		}
+		
+	var foodMenu = {"100":"Cheesy Chicken Burger", "101": "Tonkatsu Pork Burger", "102": " Sausage in a Cup", "103": "Mac and Cheese", "104": "Toast Breakfast",
+				"105": "Chicken Cutlet Aglio Olio", "106": "Tonkatsu Pork Aglio Olio", "201": "Meat Free Mac and Cheese", "202": "Salted Egg Tofu Burger",
+				"203": "Mushroom Cabanora", "301": "Shoe String Fries", "302": "Chicken Wings(2pcs)", "303": "Spam Fries", "304": "Popcorn Chicken", "305": "Chicken Floss Fries",
+				"306": "Cheesy Fries", "307": "Lok Lok Broccoli"}
+				
+	function IDTranslator(foodNo) {
+		var temp = foodMenu[foodNo];
+		return temp
+	}
+		
+	var xmlhttp = new XMLHttpRequest();
+	var url = "http://10.12.184.102:4995/api/existing_orders";
+	xmlhttp.open('GET', url, true);
+	xmlhttp.send();
+	
+	
+	xmlhttp.onload = function() {
+        var obj = JSON.parse(this.responseText);
+	    alert("Loaded Succesfully");
+		
+		for(i in obj) {
+			for(x in obj[i]) {	
+			var temp = parseInt(obj[i][x].table_number);
+			
+			if(table[temp] == 1) {
+				var tempID = "box" + temp
+				var container_block_prime = document.getElementById(tempID);
+				container_block_prime.innerHTML += "food_id: " + IDTranslator(obj[i][x].food_id)  + "<br>";
+				container_block_prime.innerHTML += "comments: " + obj[i][x].comments  + "<br>";
+				
+			} else {
+			
+			var container_block_prime = document.createElement('div');
+			
+			document.getElementById('main-first').appendChild(container_block_prime);
+			container_block_prime.className = "box";
+			container_block_prime.id = "box" + obj[i][x].table_number;
+			
+			container_block_prime.innerHTML += "Table No: " + obj[i][x].table_number  + "<br>";
+			container_block_prime.innerHTML += "food_id: " + IDTranslator(obj[i][x].food_id)  + "<br>";
+			container_block_prime.innerHTML += "comments: " + obj[i][x].comments  + "<br>";
+			table[temp] = 1;
+
+			}
+			}
+	}
+};
+
+		
 			
 		function addInput(divName){
 		
 		if (confirm("Confirm Order")) {
-			if (counter == limit)  {
-				alert("You have reached the limit of adding " + counter + " inputs");
-			}
-			else {
-				var container_block = document.createElement('div');
-                container_block.innerHTML = "<p> Order no:" + (counter) + "<br>" + document.myForm.Item.value + "<br> x" + document.myForm.Quantity.value + "<br> Table:" + document.myForm.Table.value +"</p>";
-				container_block.id = "box" + (counter) ;
-				container_block.className = "box";
-				document.getElementById(divName).appendChild(container_block);
-
-				counter++;
-			}
-			}
-			else {
-			text = "Order cancelled!";
-			}
+			var temp = document.myForm.Table.value
+			
+			if(table[temp] == 1){
+				var tempID = "box" + temp
+				var container_block_prime = document.getElementById(tempID);
+				container_block_prime.innerHTML += "food_id: " + document.myForm.Item.value + "<br>";
+				container_block_prime.innerHTML += "Quantity: " + document.myForm.Quantity.value  + "<br>";
+				alert(document.myForm.Item.value +" of Quantity " +   document.myForm.Quantity.value  + " was added to table " + document.myForm.Table.value);
+			
+			} else {
+					var container_block = document.createElement('div');
+					container_block.innerHTML = "Table No: " + document.myForm.Table.value + "<br>" + "food_id: " + document.myForm.Item.value + "<br> Quantity: " + document.myForm.Quantity.value +"</p>";
+					container_block.id = "box" + document.myForm.Table.value ;
+					container_block.className = "box";
+					document.getElementById(divName).appendChild(container_block);
+					table[temp] = 1;
+					alert(document.myForm.Item.value +" of Quantity " +   document.myForm.Quantity.value  + " was added to table " + document.myForm.Table.value);
+					}
+		}
 		}
 		
 		function fulfilled(num){
 			if (num < counter) {
 			var temp = "box" + num;
+
+			var container_block = document.getElementById(temp);
+			document.getElementById('main-second').appendChild(container_block);
 			document.getElementById(temp).style.backgroundColor = 'green';
+			return temp2 = num;
+			
+
 			}
 			else { alert("Order Does Not Exist");
+			}
+		}
+		
+		function undo(num) {
+		if (num < counter) {
+		
+			
+			if(num != '') {
+				temp2 = num;
+			}
+			temp = "box" + temp2;
+			var container_block = document.getElementById(temp);
+			alert(temp);
+			document.getElementById('main-first').appendChild(container_block);
+			document.getElementById(temp).style.backgroundColor = 'tomato';
+		}
+		else { alert("Order Does Not Exist");
 			}
 		}
             
