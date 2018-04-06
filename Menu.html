@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+    <title>Crooked Cooks Home</title>
+    <link rel="stylesheet" type="text/css" href="Transactions.css"> 
+</head>
+
+<body>
+<div class="main-block" id="topbar">
+	<div id="logo-container">
+		<a href="Crooked_Cooks.html">
+		<img id="logo"  src="Pics/Logo.jpg">
+		</a>
+	</div>
+</div>
+
+<div class="main-block" id="navbar" >
+	
+    <div id="menu-bar-container" >
+		<div class="menu-bar">  
+            <a href="Crooked_Cooks.html">Home</a>
+		</div>
+		
+		<div class="menu-bar">  
+            <a href="Transactions.html">Transaction</a>
+		</div>
+		
+		<div class="menu-bar">  
+            <a href="">Tables</a>
+		</div>
+		
+		<div class="menu-bar" id="last-menu-bar">  
+            <a href="">Menu</a>
+		</div>
+	</div>
+                    
+</div>
+
+<div class="main-block main-content" >
+	<div class="word">  
+            <h2>Menu</h2>
+		</div>
+    <div class="main-css" id="main-first" >
+			
+		
+	</div>
+</div>
+
+<div class="main-block main-content" >
+	<div class="word">  
+            <h2>Recently Added</h2>
+	</div>
+	
+	<div class="main-css" id="main-second" >
+	</div>
+	
+</div>
+	
+	<div id="button-container">  
+		<form name="myForm" method="POST">
+		<select name="food_category" placeholder="Select Item">
+			<option value="Main">Main</option>
+			<option value="Veg">Veg</option>
+			<option value="Sides">Sides</option>
+			<option value="Drink">Drink</option>
+		</select>
+		<input type="number" name="food_id" placeholder="Food Id">
+		<input type="text" name="name" placeholder="Name">
+		<input type="text" name="description" placeholder="Description">
+		<input type="number" name="price" placeholder="Price">
+		<select name="currency" placeholder="Currency">
+			<option value="$S*">SGD</option>
+			<option value="$USD">USD</option>
+		</select>
+		<input type="text" name="image_link" placeholder="Image Link">
+		<input type="button" value = "Add-Item" onClick="addInput('main-first');">
+		<input type="button" value = "Add To New Menu" onClick="newMenu('main-second');">
+		<input type="button" value = "Submit New Menu" onClick="submitMenu();">
+		</form>
+		
+			
+		<form name="myForm2" method="POST">
+				<input type="number" name="itemid" placeholder="Itemid">
+				<input type="button" value="Set Availability" onClick="available();">
+		</form>
+	</div>
+
+ <script language="Javascript" type="text/javascript">
+		
+		
+		var xmlhttp = new XMLHttpRequest();
+		var url = "https://crookedcooks.herokuapp.com/api/menu?table_number=49";
+		xmlhttp.open('GET', url, true);
+		xmlhttp.send();
+		
+		var countItem = 1;
+		var itemArr = [];
+		var menuNew = {"menu":[]};
+		var newCount = 1;
+	
+	
+	xmlhttp.onload = function() {
+        var obj = JSON.parse(this.responseText);
+	    alert("Loaded Succesfully");
+		
+		for(i in obj.menu) {
+						
+			var container_block_prime = document.createElement('div');
+			
+			document.getElementById('main-first').appendChild(container_block_prime);
+			container_block_prime.className = "box";
+			container_block_prime.id = "box" + obj.menu[i].itemid;
+			container_block_prime.innerHTML += "<p>itemid: " + obj.menu[i].itemid  + "<br></p>";
+			container_block_prime.innerHTML += "<p>food_category: " +  obj.menu[i].food_category + "<br></p>";
+			container_block_prime.innerHTML += "<p>food_id: " +  obj.menu[i].food_id + "<br></p>";
+			container_block_prime.innerHTML += "<p>name: " + obj.menu[i].name  + "<br></p>";
+			container_block_prime.innerHTML += "<p>description: " + obj.menu[i].description  + "</br></p>";
+			container_block_prime.innerHTML += "<p>price: " + obj.menu[i].price  + "</br></p>";
+			container_block_prime.innerHTML += "<p>currency: " + obj.menu[i].currency  + "</br></p>";
+			container_block_prime.innerHTML += "<p>image_link: " + obj.menu[i].image_link  + "</br></p>";
+			container_block_prime.innerHTML += "<p>Available: " + obj.menu[i].is_available  + "</br></p>";
+			itemArr[countItem] = obj.menu[i];
+			countItem ++;
+	}
+};
+
+    function addInput(divName){
+			
+			var container_block_prime = document.createElement('div');
+			container_block_prime.innerHTML += "<p>itemid: " +  countItem + "<br></p>";
+			container_block_prime.innerHTML += "<p>food_category: " +  document.myForm.food_category.value + "<br></p>";
+			container_block_prime.innerHTML += "<p>food_id: " +  document.myForm.food_id.value + "<br></p>";
+			container_block_prime.innerHTML += "<p>name" + document.myForm.name.value  + "<br></p>";
+			container_block_prime.innerHTML += "<p>description: " + document.myForm.description.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>price: " + document.myForm.price.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>currency: " + document.myForm.currency.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>image_link: " + document.myForm.image_link.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>Available: " + true  + "</br></p>";
+			document.getElementById(divName).appendChild(container_block_prime);
+			container_block_prime.Id = "box" + countItem;
+			container_block_prime.className = "box";
+			
+			var data = {
+			"itemid": countItem, 
+			"food_category": document.myForm.food_category.value ,
+			"food_id":document.myForm.food_id.value,
+			"name":document.myForm.name.value,
+			"description": document.myForm.description.value,
+			"price": document.myForm.price.value,
+			"currency": document.myForm.currency.value,
+			"image_link": document.myForm.image_link.value,
+			"is_available": true
+			}
+			
+			itemArr[countItem] = data;
+			countItem ++;
+			
+			var xhr = new XMLHttpRequest();
+			var url = "http://crookedcooks.herokuapp.com/api/admin/new_menu";
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-type", "application/json");
+			var tempo = JSON.stringify(data);
+			xhr.send(tempo);
+			alert("Success");
+					
+
+		}
+		
+		
+    function newMenu(divName){
+			
+			var container_block_prime = document.createElement('div');
+			container_block_prime.innerHTML += "<p>itemid: " +  newCount + "<br></p>";
+			container_block_prime.innerHTML += "<p>food_category: " +  document.myForm.food_category.value + "<br></p>";
+			container_block_prime.innerHTML += "<p>food_id: " +  document.myForm.food_id.value + "<br></p>";
+			container_block_prime.innerHTML += "<p>name" + document.myForm.name.value  + "<br></p>";
+			container_block_prime.innerHTML += "<p>description: " + document.myForm.description.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>price: " + document.myForm.price.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>currency: " + document.myForm.currency.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>image_link: " + document.myForm.image_link.value  + "</br></p>";
+			container_block_prime.innerHTML += "<p>Available: " + true  + "</br></p>";
+			document.getElementById(divName).appendChild(container_block_prime);
+			container_block_prime.Id = "box" + newCount;
+			container_block_prime.className = "box";
+			
+			var data = {
+			"food_category": document.myForm.food_category.value ,
+			"food_id":document.myForm.food_id.value,
+			"name":document.myForm.name.value,
+			"description": document.myForm.description.value,
+			"price": document.myForm.price.value,
+			"currency": document.myForm.currency.value,
+			"image_link": document.myForm.image_link.value,
+			"is_available": true
+			}
+			
+			menuNew.menu[newCount - 1] = data;
+			newCount ++;
+			alert("Added");
+			
+					
+
+		}
+		
+	function submitMenu() {
+		
+		var xhr = new XMLHttpRequest();
+		var url = "http://crookedcooks.herokuapp.com/api/admin/new_menu?keycode=12345";
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json");
+		var tempo = JSON.stringify(menuNew);
+		xhr.send(tempo);
+		alert(tempo);
+		
+	}
+	
+	function available() {
+		if(itemArr[document.myForm2.itemid.value].is_available == false){
+			itemArr[document.myForm2.itemid.value].is_available = true;
+			
+			var xhr = new XMLHttpRequest();
+			var url = "http://crookedcooks.herokuapp.com/api/admin/set_availability?food_id=" + itemArr[document.myForm2.itemid.value].food_id+ "&boolean=" + true ;
+			xhr.open("GET", url, true);
+			xhr.setRequestHeader("Content-type", "application/json");
+			xhr.send();
+			alert("Set to available");
+			
+		} else {
+			itemArr[document.myForm2.itemid.value].is_available = false;
+			
+			var xhr = new XMLHttpRequest();
+			var url = "http://crookedcooks.herokuapp.com/api/admin/set_availability?food_id=" + itemArr[document.myForm2.itemid.value].food_id+ "&boolean=" + false ;
+			xhr.open("GET", url, true);
+			xhr.setRequestHeader("Content-type", "application/json");
+			xhr.send();
+			alert("Not Available");
+		
+		}
+	}
+		
+		
+		
+		</script>
+</body>
+</html>

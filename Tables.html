@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+    <title>Crooked Cooks Home</title>
+    <link rel="stylesheet" type="text/css" href="Tables.css"> 
+</head>
+
+<body>
+<div class="main-block" id="topbar">
+	<div id="logo-container">
+		<a href="Crooked_Cooks.html">
+		<img id="logo"  src="Pics/Logo.jpg">
+		</a>
+	</div>
+</div>
+
+<div class="main-block" id="navbar" >
+	
+    <div id="menu-bar-container" >
+		<div class="menu-bar">  
+            <a href="Crooked_Cooks.html">Home</a>
+		</div>
+		
+		<div class="menu-bar">  
+            <a href="Transactions.html">Transaction</a>
+		</div>
+		
+		<div class="menu-bar">  
+            <a href="">Tables</a>
+		</div>
+		
+		<div class="menu-bar" id="last-menu-bar">  
+            <a href="">Menu</a>
+		</div>
+	</div>
+                    
+</div>
+
+<div class="main-block" id="main-content" >
+	<div class="word">  
+            <h2>Seating Plan</h2>
+		</div>
+    <div id="main-first" >
+		
+		<div class="box" id="box1">  
+            <p>Table 1</p>
+		</div>
+		<div class="box" id="box2">  
+            <p>Table 2</p>
+		</div>
+		<div class="box" id="box3">  
+            <p>Table 3</p>
+		</div>
+		<div class="box" id="box4">  
+            <p>Table 4</p>
+		</div>
+		<div class="box" id="box5">  
+            <p>Table 5</p>
+		</div>
+		<div class="box" id="box6">  
+            <p>Table 6</p>
+		</div>
+		<div class="box" id="box7">  
+            <p>Table 7</p>
+		</div>
+		<div class="box" id="box8">  
+            <p>Table 8</p>
+		</div>
+		<div class="box" id="box9">  
+            <p>Table 9</p>
+		</div>		
+		<div class="box" id="box10">  
+            <p>Table 10</p>
+		</div>
+			
+	</div>
+	<div id="main-second" >
+		<div id="transaction">
+			<div class="word">  
+				<h2>Time stamp</h2>
+			</div>
+			<div class="box" id="Time"> 
+				<p>Time in</p>
+			</div>
+		</div>	
+		
+		<div id="orders">
+			<div class="word">  
+				<h2>Orders</h2>
+			</div>
+			<div class="box" id="order"> 
+				<p>Aglio Olio</p>	
+			</div>
+		</div>	
+	</div>
+                    
+</div>
+
+        <script language="Javascript" type="text/javascript">
+		
+		
+		xmlhttp.onload = function() {
+        var obj = JSON.parse(this.responseText);
+	    alert("Loaded Succesfully");
+		
+		for(i in obj) {
+			for(x in obj[i]) {	
+			var temp = parseInt(obj[i][x].table_number);
+			
+			var tempID = "box" + temp
+			var container_block_prime = document.getElementById(tempID);
+			container_block_prime.innerHTML += "No of People: " + IDTranslator(obj[i][x].food_id)  + "<br>";
+			container_block_prime.innerHTML += "comments: " + obj[i][x].comments  + "<br>";
+				
+			}
+
+			}
+			
+		}
+
+		
+		
+		</script>
+</body>
+</html>
