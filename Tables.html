@@ -26,11 +26,11 @@
 		</div>
 		
 		<div class="menu-bar">  
-            <a href="">Tables</a>
+            <a href="Tables.html">Tables</a>
 		</div>
 		
 		<div class="menu-bar" id="last-menu-bar">  
-            <a href="">Menu</a>
+            <a href="Menu.html">Menu</a>
 		</div>
 	</div>
                     
@@ -42,62 +42,20 @@
 		</div>
     <div id="main-first" >
 		
-		<div class="box" id="box1">  
-            <p>Table 1</p>
-		</div>
-		<div class="box" id="box2">  
-            <p>Table 2</p>
-		</div>
-		<div class="box" id="box3">  
-            <p>Table 3</p>
-		</div>
-		<div class="box" id="box4">  
-            <p>Table 4</p>
-		</div>
-		<div class="box" id="box5">  
-            <p>Table 5</p>
-		</div>
-		<div class="box" id="box6">  
-            <p>Table 6</p>
-		</div>
-		<div class="box" id="box7">  
-            <p>Table 7</p>
-		</div>
-		<div class="box" id="box8">  
-            <p>Table 8</p>
-		</div>
-		<div class="box" id="box9">  
-            <p>Table 9</p>
-		</div>		
-		<div class="box" id="box10">  
-            <p>Table 10</p>
-		</div>
 			
 	</div>
 	<div id="main-second" >
-		<div id="transaction">
-			<div class="word">  
-				<h2>Time stamp</h2>
-			</div>
-			<div class="box" id="Time"> 
-				<p>Time in</p>
-			</div>
-		</div>	
-		
-		<div id="orders">
-			<div class="word">  
-				<h2>Orders</h2>
-			</div>
-			<div class="box" id="order"> 
-				<p>Aglio Olio</p>	
-			</div>
-		</div>	
+
 	</div>
                     
 </div>
 
         <script language="Javascript" type="text/javascript">
 		
+		var xmlhttp = new XMLHttpRequest();
+		var url = "http://crookedcooks.herokuapp.com/api/get_session";
+		xmlhttp.open('GET', url, true);
+		xmlhttp.send();
 		
 		xmlhttp.onload = function() {
         var obj = JSON.parse(this.responseText);
@@ -107,10 +65,13 @@
 			for(x in obj[i]) {	
 			var temp = parseInt(obj[i][x].table_number);
 			
-			var tempID = "box" + temp
-			var container_block_prime = document.getElementById(tempID);
-			container_block_prime.innerHTML += "No of People: " + IDTranslator(obj[i][x].food_id)  + "<br>";
-			container_block_prime.innerHTML += "comments: " + obj[i][x].comments  + "<br>";
+			var container_block_prime = document.createElement('div');
+			container_block_prime.innerHTML += "Table No: " + obj[i][x].table_number  + "<br>";
+			container_block_prime.innerHTML += "No of People: " + obj[i][x].num_people  + "<br>";
+			container_block_prime.innerHTML += "Start Time: " + obj[i][x].start_time  + "<br>";
+			container_block_prime.className = "box";
+			container_block_prime.id = "box" + obj[i][x].table_number;		
+			document.getElementById('main-first').appendChild(container_block_prime);
 				
 			}
 

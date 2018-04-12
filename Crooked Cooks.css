@@ -73,76 +73,51 @@ a:hover {
 
 
 #main-first {
-	flex-grow: 4;
-
+		display: flex;
+	flex-wrap: wrap;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+  
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
 	
 }
 
 #main-second {
-	flex-grow: 2;
-	
+	display: flex;
+	flex-wrap: wrap;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+  
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around
 }
 
 .word {
 	
 }
 
-#box1 {
+.box {
   background: tomato;
-  margin-right: 5%;
-  height: 500px;
+  min-height: 150px;
+  width: 200px;
   color: white;
-  font-weight: bold;
-  font-size: 3em;
   position: relative;
+  padding: 5px;
+  margin-top: 5px;
   
 	
 }
 	
-#box1 p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
-
 	
+.box p {
+	font-size: 1.2em;
 }
 
-#box2 { 
-  background: tomato;
-  width: auto;
-  height: 200px;
-  color: white;
-  font-weight: bold;
-  font-size: 3em;
-  position: relative;
-	
-}
 
-#box2 p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  	
-}
-
-#box3 { 
-  background: tomato;
-  width: auto;
-  height: 230px;
-  color: white;
-  font-weight: bold;
-  font-size: 3em;
-  position: relative;
-	
-}
-
-#box3 p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  	
-}

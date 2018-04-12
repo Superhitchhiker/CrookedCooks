@@ -26,11 +26,11 @@
 		</div>
 		
 		<div class="menu-bar">  
-            <a href="">Tables</a>
+            <a href="Tables.html">Tables</a>
 		</div>
 		
 		<div class="menu-bar" id="last-menu-bar">  
-            <a href="">Menu</a>
+            <a href="Menu.html">Menu</a>
 		</div>
 	</div>
                     
@@ -42,31 +42,131 @@
 		<div class="word">  
             <h2>Seating Plan</h2>
 		</div>
-		<div id="box1">  
-            <p>Tables</p>
-		</div>
+	
 			
 	</div>
 	<div id="main-second" >
-		<div id="transaction">
-			<div class="word">  
-				<h2>Transaction History</h2>
-			</div>
-			<div id="box2"> 
-				<p>Daily</p>
-			</div>
-		</div>	
-		
-		<div id="orders">
 			<div class="word">  
 				<h2>New Orders</h2>
-			</div>
-			<div id="box3"> 
-				<p>Aglio Olio</p>	
-			</div>
-		</div>	
+			</div>	
 	</div>
                     
 </div>
+<script language="Javascript" type="text/javascript">
+
+	var foodMenu = {"100":"Cheesy Chicken Burger", "101": "Tonkatsu Pork Burger", "102": " Sausage in a Cup", "103": "Mac and Cheese", "104": "Toast Breakfast",
+				"105": "Chicken Cutlet Aglio Olio", "106": "Tonkatsu Pork Aglio Olio", "201": "Meat Free Mac and Cheese", "202": "Salted Egg Tofu Burger",
+				"203": "Mushroom Cabanora", "301": "Shoe String Fries", "302": "Chicken Wings(2pcs)", "303": "Spam Fries", "304": "Popcorn Chicken", "305": "Chicken Floss Fries",
+				"306": "Cheesy Fries", "307": "Lok Lok Broccoli"}
+				
+	var ret = {};
+	for(var key in foodMenu){
+		ret[foodMenu[key]] = key;
+  }
+				
+	function IDTranslator(foodNo) {
+		var temp = foodMenu[foodNo];
+		return temp;
+	}
+	
+	function FoodTranslator(food) {
+		return ret[food];
+  
+	};
+		
+		var xmlhttp = new XMLHttpRequest();
+		var url = "http://crookedcooks.herokuapp.com/api/get_session";
+		xmlhttp.open('GET', url, true);
+		xmlhttp.send();
+		
+		xmlhttp.onload = function() {
+        var obj = JSON.parse(this.responseText);
+	    alert("Loaded Succesfully");
+		
+		for(i in obj) {
+			for(x in obj[i]) {	
+			var temp = parseInt(obj[i][x].table_number);
+			
+			var container_block_prime = document.createElement('div');
+			container_block_prime.innerHTML += "Table No: " + obj[i][x].table_number  + "<br>";
+			container_block_prime.innerHTML += "No of People: " + obj[i][x].num_people  + "<br>";
+			container_block_prime.innerHTML += "Start Time: " + obj[i][x].start_time  + "<br>";
+			container_block_prime.className = "box";
+			container_block_prime.id = "box" + obj[i][x].table_number;		
+			document.getElementById('main-first').appendChild(container_block_prime);
+				
+			}
+
+			}
+			
+		}
+		
+	var table = [];
+		for(i in table) {
+			table[i-1] = 0;
+		}	
+		
+	var xmlhttpOrders = new XMLHttpRequest();
+	var url = "http://crookedcooks.herokuapp.com/api/existing_orders";
+	xmlhttpOrders.open('GET', url, true);
+	xmlhttpOrders.send();
+	var orderArr = [];
+	var countOrder = 1;
+		if(countOrder == 500) {
+			countOrder = 1;
+		}
+	
+	
+	xmlhttpOrders.onload = function() {
+        var obj = JSON.parse(this.responseText);
+	    alert("Loaded Succesfully");
+		
+		
+		for(i in obj) {
+			for(x in obj[i]) {	
+			var temp = parseInt(obj[i][x].table_number);
+			
+			if(table[temp] == 1) {
+				var tempID = "box" + temp;
+				var container_block_parent = document.getElementById(tempID);
+				var container_block_prime = document.createElement('div');
+				
+				container_block_prime.innerHTML += "<p>Order_id: " + countOrder  + "<br></p>";
+				container_block_prime.innerHTML += "<p>" + IDTranslator(obj[i][x].food_id)  + "<br></p>";
+				container_block_prime.innerHTML += "<p>comments: " + obj[i][x].comments  + "</br></p>";
+				container_block_prime.className = "Order";
+				container_block_prime.id = obj[i][x].table_number +"-order" + countOrder;
+				orderArr[countOrder] = obj[i][x].food_id;
+				countOrder += 1;
+				
+				document.getElementById(tempID).appendChild(container_block_prime);
+				
+
+			} else {
+			
+			var container_block_prime = document.createElement('div');
+			var container_block_parent = document.createElement('div');
+			
+			document.getElementById('main-second').appendChild(container_block_parent);
+			container_block_parent.className = "box";
+			container_block_parent.id = "box" + obj[i][x].table_number;
+			container_block_parent.innerHTML += "<p>Table No: " + obj[i][x].table_number  + "<br></p>";
+			
+			container_block_prime.innerHTML += "<p>Order_id: " + countOrder  + "<br></p>";
+			container_block_prime.innerHTML += "<p>" + IDTranslator(obj[i][x].food_id)  + "<br></p>";
+			container_block_prime.innerHTML += "<p>comments: " + obj[i][x].comments  + "</br></p>";
+			document.getElementById("box" + obj[i][x].table_number).appendChild(container_block_prime);
+			container_block_prime.className = "Order";
+			container_block_prime.id = obj[i][x].table_number +"-order" + countOrder;
+			orderArr[countOrder] = obj[i][x].food_id;
+			table[temp] = 1;
+			countOrder += 1;
+
+			}
+			}
+	}
+};
+</script>
 </body>
+ 
 </html>
